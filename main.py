@@ -16,4 +16,4 @@ if __name__ == "__main__":
     
     res = pyautogui.locateOnScreen(ABSOLUATE_PATH + "pics\\Chats-green-chinese.png", confidence=0.9)
     print(res)
-    print("test2")
+    print("test3")
