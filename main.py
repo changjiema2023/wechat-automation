@@ -6,7 +6,7 @@ import random
 import time
 
 
-ABSOLUATE_PATH="D:\\automation\\wechat\\"
+ABSOLUATE_PATH="D:\\new-automation\\wechat-automation\\"
 BACK_IMAGE="pics\\Back.png"
 CHATS_IMAGE="pics\\Chats-white-english.png"
 DISCOVER_IMAGE="pics\\Discover-white-english.png"
@@ -18,7 +18,7 @@ CAMERA_IMAGE="pics\\Camera.png"
 #pyautogui.moveTo(location) # Move the mouse to the location
 
 #def generate_random_coordinates():
-
+'''
 def main_page():
     image_location = pyautogui.locateOnScreen(ABSOLUATE_PATH + BACK_IMAGE, confidence=0.8)
     i = 0
@@ -72,14 +72,20 @@ def send_moments():
     # Go to Camera.
     image_location = pyautogui.locateOnScreen(ABSOLUATE_PATH + CAMERA_IMAGE, confidence=0.8)
     move_and_click(image_location=image_location)
-
+'''
 
 
 if __name__ == "__main__":
+
+    res = pyautogui.locateOnScreen(ABSOLUATE_PATH + "pics\\Discover-white.png", confidence=0.9)
+    print(res)
+
+    '''
     # Go to main page.
     main_page()
 
     # send friend
     send_moments()
+    '''
  
 
