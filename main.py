@@ -4,7 +4,7 @@ import pyautogui
 import pyscreeze
 import random
 import time
-
+import mysql.connector
 
 ABSOLUATE_PATH="D:\\new-automation\\wechat-automation\\"
 BACK_IMAGE="pics\\Back.png"
@@ -74,13 +74,49 @@ def send_moments():
     move_and_click(image_location=image_location)
 '''
 
+def insert_db():
+    db_config = {
+        'host': '127.0.0.1',
+        'user': 'root',
+        'password': 'root',
+        'database': 'cosmeticsdb',
+    }
+
+    # Create a connection to the MySQL database
+    connection = mysql.connector.connect(**db_config)
+
+    # Create a cursor to interact with the database
+    cursor = connection.cursor()
+
+    # Example data to insert
+    customer_data = [
+        (2, 'John Doe', 'Male'),
+        (3, 'Jane Smith', 'Female'),
+        # Add more rows as needed
+    ]
+
+    # SQL query to insert data into the customer table
+    insert_query = "INSERT INTO customer (id, name, gender) VALUES (%s, %s, %s)"
+
+    # Execute the query for each row of data
+    for customer in customer_data:
+        cursor.execute(insert_query, customer)
+
+    # Commit the changes to the database
+    connection.commit()
+
+    # Close the cursor and connection
+    cursor.close()
+    connection.close()  
 
 if __name__ == "__main__":
 
+    
+
+    '''
     res = pyautogui.locateOnScreen(ABSOLUATE_PATH + "pics\\Discover-white.png", confidence=0.9)
     print(res)
 
-    '''
     # Go to main page.
     main_page()
 
