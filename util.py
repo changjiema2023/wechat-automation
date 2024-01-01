@@ -4,24 +4,22 @@ import pyscreeze
 
 pyscreeze.USE_IMAGE_NOT_FOUND_EXCEPTION = False
 
-def move_and_click(image_path):
+def move_and_click_image(image_path):
     image_location = locate(image_path)
 
     # Check if the image was found
     if image_location is not None:
-        # Extract the coordinates of the located image
-        left, top, width, height = image_location
-
-        # Calculate a random point within the located image
-        random_x = random.randint(left, left + width)
-        random_y = random.randint(top, top + height)
+        x, y = random_location(image_location)
 
         # Move the mouse to the random location
-        pyautogui.moveTo(random_x, random_y, duration=2)
+        pyautogui.moveTo(x, y, duration=2)
         pyautogui.click()
     else:
-        print("image " + image_path + " is not found on the screen")
+        #print("image " + image_path + " is not found on the screen")
 
+        error_message = f"Image {image_path} is not found on the screen"
+        # Raise a ValueError with the error message
+        raise ValueError(error_message)
 
 def locate(image_path, confidence=0.9, region=None, grayscale=False):
     '''
@@ -42,3 +40,13 @@ def locate(image_path, confidence=0.9, region=None, grayscale=False):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         return None
+    
+def random_location(coordinates):
+    # Extract the coordinates of the located image
+    left, top, width, height = coordinates
+
+    # Calculate a random point within the located image
+    random_x = random.randint(left, left + width)
+    random_y = random.randint(top, top + height)
+
+    return random_x, random_y
