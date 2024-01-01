@@ -1,7 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
 
-def connect_to_mysql():
+def connect_mysql():
     db_config = {
         'host': '127.0.0.1',
         'user': 'root',
@@ -28,8 +28,9 @@ def connect_to_mysql():
 
 def add_new_friend():
     try:
-        connect_to_mysql()
+        connect_mysql()
         
+        # Add new friend
         
 
     except Exception as e:
