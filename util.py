@@ -1,10 +1,11 @@
 import random
 import pyautogui
 import pyscreeze
+import time
 
 pyscreeze.USE_IMAGE_NOT_FOUND_EXCEPTION = False
 
-def move_and_click_image(image_path):
+def move_and_click_image(image_path, duration=2):
     image_location = locate(image_path)
 
     # Check if the image was found
@@ -12,14 +13,29 @@ def move_and_click_image(image_path):
         x, y = random_location(image_location)
 
         # Move the mouse to the random location
-        pyautogui.moveTo(x, y, duration=2)
+        pyautogui.moveTo(x, y, duration)
         pyautogui.click()
+        time.sleep(1)
     else:
         #print("image " + image_path + " is not found on the screen")
 
         error_message = f"Image {image_path} is not found on the screen"
         # Raise a ValueError with the error message
         raise ValueError(error_message)
+    
+def long_press(x, y, duration=2):
+    # Move the mouse to the desired location
+    pyautogui.moveTo(x, y)
+
+    # Simulate a mouse press
+    pyautogui.mouseDown()
+
+    # Wait for the specified duration (long press)
+    time.sleep(duration)
+
+    # Release the mouse button
+    pyautogui.mouseUp()
+    time.sleep(1)
 
 def locate(image_path, confidence=0.9, region=None, grayscale=False):
     '''
