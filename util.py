@@ -2,6 +2,7 @@ import random
 import pyautogui
 import pyscreeze
 import time
+from datetime import datetime
 
 pyscreeze.USE_IMAGE_NOT_FOUND_EXCEPTION = False
 
@@ -66,3 +67,12 @@ def random_location(coordinates):
     random_y = random.randint(top, top + height)
 
     return random_x, random_y
+
+def is_valid_time_format(time_string, format="%Y-%m-%d %H:%M:%S"):
+    try:
+        # Attempt to parse the string according to the specified format
+        datetime.strptime(time_string, format)
+        return True
+    except ValueError:
+        # ValueError is raised if the string does not match the specified format
+        return False

@@ -35,12 +35,20 @@ def add_friend():
     pyautogui.click()
     time.sleep(2)
     '''
+
+    # 检查是否已经是好友
+    is_friend = False
+    '''
+    if util.locate(const.SEND_MESSAGE):
+        is_friend = True
+    '''
     '''
     # 查看‘设置备注和标签’
     err = util.move_and_click_image(const.EDIT_CONTACT)
     if err is not None:
         sys.exit("Stopping the process because couldn't locate edit-contact image.")
     '''
+
 
     # 查看‘备注’
     image_location = util.locate(const.REMARK)
@@ -50,8 +58,14 @@ def add_friend():
     util.long_press(remark_x, remark_y)
     util.move_and_click_image(const.SELECT_ALL, duration=1)
     util.move_and_click_image(const.COPY, duration=1)
-    content = pyperclip.paste()
-    print(content)
+    remark_content = pyperclip.paste()
+    if util.is_valid_time_format(remark_content):
+        # check if he is already a friend. If not,
+        if is_friend:
+            
+    else:
+        # Generate a new remark 
+        # Add the new member to database
 
     '''
     image_location = util.locate(const.ADD_TO_CONTACTS)

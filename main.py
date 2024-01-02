@@ -6,8 +6,7 @@ import random
 import time
 import mysql.connector
 import location
-
-
+from datetime import datetime
 
 
 #location = pyautogui.center(res)
@@ -49,17 +48,33 @@ def insert_db():
 
     # Example data to insert
     customer_data = [
-        (4, 'Doe', 'Male'),
-        (5, 'Smith', 'Female'),
+        ('Doe', 'Male', '否', ''),
         # Add more rows as needed
     ]
 
     # SQL query to insert data into the customer table
-    insert_query = "INSERT INTO customer (编号, 姓名, 性别) VALUES (%s, %s, %s)"
+    insert_query = "INSERT INTO customer (姓名, 性别, 好友, 创建日期) VALUES (%(姓名)s, %(性别)s, %(好友)s, %(创建日期)s)"
+
+    current_time = datetime.now()
+    time_string = current_time.strftime("%Y-%m-%d %H:%M:%S")
+    entry_data = {
+        "姓名": "Doe",
+        "性别": "Male",
+        "好友": "否",
+        "创建日期": time_string,
+    }
+    cursor.execute(insert_query, entry_data)
+    '''
+    # Example data to insert
+    customer_data = [
+        ('Doe', 'Male', '否', ''),
+        # Add more rows as needed
+    ]
 
     # Execute the query for each row of data
     for customer in customer_data:
         cursor.execute(insert_query, customer)
+    '''
 
     # Commit the changes to the database
     connection.commit()
