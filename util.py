@@ -6,7 +6,7 @@ from datetime import datetime
 
 pyscreeze.USE_IMAGE_NOT_FOUND_EXCEPTION = False
 
-def move_and_click_image(image_path, duration=2):
+def move_and_click_image(image_path, duration=1):
     image_location = locate(image_path)
 
     # Check if the image was found
@@ -24,9 +24,9 @@ def move_and_click_image(image_path, duration=2):
         # Raise a ValueError with the error message
         raise ValueError(error_message)
     
-def long_press(x, y, duration=2):
+def long_press(x, y, duration=1):
     # Move the mouse to the desired location
-    pyautogui.moveTo(x, y)
+    pyautogui.moveTo(x, y, duration)
 
     # Simulate a mouse press
     pyautogui.mouseDown()

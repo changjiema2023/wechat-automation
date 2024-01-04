@@ -1,22 +1,39 @@
 import mysql.connector
 from datetime import datetime
+import database
 
-CUSTOMER_INSERT_QUERY = "INSERT INTO customer (姓名, 性别, 好友, 创建日期) VALUES (%(姓名)s, %(性别)s, %(好友)s, %(创建日期)s)"
+CUSTOMER_INSERT_QUERY = "INSERT INTO customer (姓名, 性别, 创建日期) VALUES (%(姓名)s, %(性别)s, %(创建日期)s)"
+CUSTOMER_SEARCH_QUERY = "SELECT * FROM customer WHERE 姓名 = %(姓名)s AND 性别 = %(性别)s AND 创建日期 = %(创建日期)s"
 
-def add_new_customer():
-    current_time = datetime.now()
-    time_string = current_time.strftime("%Y-%m-%d %H:%M:%S")
+connection_pool = mysql.connector.pooling.MySQLConnectionPool(
+    pool_name="my_pool",
+    pool_size=5,
+    user='root',
+    password='root',
+    host='localhost',
+    database='cosmeticsdb'
+)
+
+def add_new_customer(name, gender, time_string):
+    connection = connection_pool.get_connection()
+    cursor = connection.cursor()
     entry_data = {
-        "姓名": "Doe",
-        "性别": "Male",
-        "好友": "否",
+        "姓名": name,
+        "性别": gender,
         "创建日期": time_string,
     }
-    cursor.execute(CUSTOMER_INSERT_QUERY, entry_data)
 
-    # Commit the changes to the database
-    connection.commit()
+    cursor.execute(CUSTOMER_SEARCH_QUERY, entry_data)
+    result = cursor.fetchone()
+
+    if result:
+        print(f"Already had customer {name} in the database")
+    else:
+        cursor.execute(CUSTOMER_INSERT_QUERY, entry_data)
+        # Commit the changes to the database
+        connection.commit()
+        print(f"Added customer {name} to database")
 
     # Close the cursor and connection
     cursor.close()
-    connection.close() 
+    connection.close()
