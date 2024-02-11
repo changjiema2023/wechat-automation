@@ -3,6 +3,7 @@ import pyautogui
 import pyscreeze
 import time
 from datetime import datetime
+import const
 
 pyscreeze.USE_IMAGE_NOT_FOUND_EXCEPTION = False
 
@@ -23,6 +24,12 @@ def move_and_click_image(image_path, duration=1):
         error_message = f"Image {image_path} is not found on the screen"
         # Raise a ValueError with the error message
         raise ValueError(error_message)
+    
+def move_and_click_location(x, y, duration=1):
+    random_x = random.randint(x, x + const.RANGE)
+    random_y = random.randint(y, y + const.RANGE)    
+    pyautogui.moveTo(random_x, random_y, duration)
+    pyautogui.click()
     
 def long_press(x, y, duration=1):
     # Move the mouse to the desired location

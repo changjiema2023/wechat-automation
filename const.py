@@ -21,3 +21,5 @@ WECHAT_NAME=ABSOLUATE_PATH + "pics\\Wechat-name.png"
 MALE=ABSOLUATE_PATH + "pics\\Male.png"
 WECHAT_NAME_COPY=ABSOLUATE_PATH + "pics\\Wechat-name-copy.png"
 CLEAR_REMARK=ABSOLUATE_PATH + "pics\\Clear-remark.png"
+
+RANGE=5
