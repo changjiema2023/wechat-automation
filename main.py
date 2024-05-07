@@ -91,6 +91,7 @@ if __name__ == "__main__":
     '''
     res = pyautogui.locateOnScreen(ABSOLUATE_PATH + "pics\\Chats-green.png", confidence=0.9)
     print(res)
+    test
 
     # Go to main page.
     main_page()
