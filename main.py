@@ -8,6 +8,7 @@ import mysql.connector
 import location
 from datetime import datetime
 import pygetwindow as gw
+import product
 
 #location = pyautogui.center(res)
 #pyautogui.moveTo(location) # Move the mouse to the location
@@ -97,7 +98,8 @@ if __name__ == "__main__":
     #insert_db()
     #location.main_page()
     
-    move_window_to_top_left(window_title)
+    # move_window_to_top_left(window_title)
+    product.read_product()
     '''
     res = pyautogui.locateOnScreen(ABSOLUATE_PATH + "pics\\Chats-green.png", confidence=0.9)
     print(res)
@@ -109,5 +111,3 @@ if __name__ == "__main__":
     # send friend
     send_moments()
     '''
- 
-

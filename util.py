@@ -5,6 +5,56 @@ import time
 from datetime import datetime
 import const
 
+def generate_random_coordinates(x, y):
+    """Generate random coordinates within the screen resolution."""
+    random_x = random.randint(x - const.RANGE_ON_X_AXIS, x + const.RANGE_ON_X_AXIS)
+    random_y = random.randint(y - const.RANGE_ON_Y_AXIS, y + const.RANGE_ON_Y_AXIS)
+    return random_x, random_y
+
+def move_and_click(x, y, range, duration=const.MOVING_SPEED):
+    random_x, random_y = x, y
+
+    """Move the mouse to the specified location within a specific range and click."""
+    if range:
+        random_x, random_y = generate_random_coordinates(x, y)
+
+    pyautogui.moveTo(random_x, random_y, duration)
+    pyautogui.click()
+    time.sleep(1)
+
+
+def long_press(x, y, duration=const.MOVING_SPEED, press_duration=2):
+    random_x, random_y = generate_random_coordinates(x, y) 
+    pyautogui.moveTo(x, y, duration)
+
+    # Simulate a mouse press
+    pyautogui.mouseDown()
+
+    # Wait for the specified duration (long press)
+    time.sleep(press_duration)
+
+    # Release the mouse button
+    pyautogui.mouseUp()
+    time.sleep(0.5)
+
+def print_clipboard_content(clipboard_content):
+    try:
+        print("Clipboard content:")
+        print(clipboard_content)
+    except UnicodeEncodeError:
+        print("Clipboard content (encoded using utf-8):")
+        print(clipboard_content.encode('utf-8'))
+
+
+
+
+
+
+
+
+
+
+
 pyscreeze.USE_IMAGE_NOT_FOUND_EXCEPTION = False
 
 def move_and_click_image(image_path, duration=1):
@@ -31,19 +81,6 @@ def move_and_click_location(x, y, duration=1):
     pyautogui.moveTo(random_x, random_y, duration)
     pyautogui.click()
     
-def long_press(x, y, duration=1):
-    # Move the mouse to the desired location
-    pyautogui.moveTo(x, y, duration)
-
-    # Simulate a mouse press
-    pyautogui.mouseDown()
-
-    # Wait for the specified duration (long press)
-    time.sleep(duration)
-
-    # Release the mouse button
-    pyautogui.mouseUp()
-    time.sleep(1)
 
 def locate(image_path, confidence=0.9, region=None, grayscale=False):
     '''
