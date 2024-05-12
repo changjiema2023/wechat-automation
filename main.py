@@ -83,8 +83,8 @@ def insert_db():
     cursor.close()
     connection.close() 
 
+# Move the window to the desired location.
 window_title = "2201117TY"
-
 def move_window_to_top_left(window_title):
     try:
         window = gw.getWindowsWithTitle(window_title)[0]
