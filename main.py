@@ -7,7 +7,7 @@ import time
 import mysql.connector
 import location
 from datetime import datetime
-
+import pygetwindow as gw
 
 #location = pyautogui.center(res)
 #pyautogui.moveTo(location) # Move the mouse to the location
@@ -83,11 +83,21 @@ def insert_db():
     cursor.close()
     connection.close() 
 
+window_title = "2201117TY"
+
+def move_window_to_top_left(window_title):
+    try:
+        window = gw.getWindowsWithTitle(window_title)[0]
+        window.moveTo(0, 0)
+        print(f"Moved window '{window_title}' to the top-left corner.")
+    except IndexError:
+        print(f"Window '{window_title}' not found.")
 
 if __name__ == "__main__":
-    insert_db()
+    #insert_db()
     #location.main_page()
-
+    
+    move_window_to_top_left(window_title)
     '''
     res = pyautogui.locateOnScreen(ABSOLUATE_PATH + "pics\\Chats-green.png", confidence=0.9)
     print(res)
