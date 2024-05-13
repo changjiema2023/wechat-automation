@@ -2,6 +2,26 @@ import mysql.connector
 from datetime import datetime
 import database
 
+
+"""
+编号
+类别： 口红，精华
+品牌
+分类： 小样，正装
+功效
+容量
+属性
+来源
+成本
+售价
+有效期
+库存
+更新日期
+产品描述
+图片
+
+"""
+
 CUSTOMER_INSERT_QUERY = "INSERT INTO customer (姓名, 性别, 创建日期) VALUES (%(姓名)s, %(性别)s, %(创建日期)s)"
 CUSTOMER_SEARCH_QUERY = "SELECT * FROM customer WHERE 姓名 = %(姓名)s AND 性别 = %(性别)s AND 创建日期 = %(创建日期)s"
 
