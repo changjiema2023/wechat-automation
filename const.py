@@ -6,6 +6,7 @@ RANGE_ON_Y_AXIS=5
 MOVING_SPEED=0.7
 
 
+BRANDS = ["迪奥", "兰蔻"]
 
 
 

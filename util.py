@@ -4,6 +4,7 @@ import pyscreeze
 import time
 from datetime import datetime
 import const
+import re
 
 def generate_random_coordinates(x, y):
     """Generate random coordinates within the screen resolution."""
@@ -37,13 +38,18 @@ def long_press(x, y, duration=const.MOVING_SPEED, press_duration=2):
     pyautogui.mouseUp()
     time.sleep(0.5)
 
-def print_clipboard_content(clipboard_content):
-    try:
-        print("Clipboard content:")
-        print(clipboard_content)
-    except UnicodeEncodeError:
-        print("Clipboard content (encoded using utf-8):")
-        print(clipboard_content.encode('utf-8'))
+
+def search_keyword(clipboard_content, keywords):
+    pattern = '|'.join(re.escape(keyword) for keyword in keywords)
+    regex = re.compile(pattern)
+    filename = const.ABSOLUATE_PATH + "product.txt"
+    for line in clipboard_content:
+        match = regex.search(line)
+        if match:
+            matched_keyword = match.group()
+            # print(f"Found keyword '{matched_keyword}' in line: {line}")
+            with open(filename, 'w', encoding='utf-8') as file:
+                file.write(matched_keyword)
 
 
 
