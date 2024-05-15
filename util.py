@@ -39,22 +39,82 @@ def long_press(x, y, duration=const.MOVING_SPEED, press_duration=2):
     time.sleep(0.5)
 
 
-def search_keyword(clipboard_content, keywords):
-    pattern = '|'.join(re.escape(keyword) for keyword in keywords)
-    regex = re.compile(pattern)
+def get_brand_and_product(clipboard_content):
+    brands_pattern = '|'.join(re.escape(brand) for brand in const.BRANDS)
+    brands_regex = re.compile(brands_pattern)
+
+    products_pattern = '|'.join(re.escape(product) for product in const.PRODUCTS)
+    products_regex = re.compile(products_pattern)
+
+    brand, product, capacity, valid = "", "", "", ""
+    price = 0
+
     filename = const.ABSOLUATE_PATH + "product.txt"
     for line in clipboard_content:
-        match = regex.search(line)
+        if "专柜" in line:
+            continue
+
+        # search for brand
+        match = brands_regex.search(line)
         if match:
-            matched_keyword = match.group()
-            # print(f"Found keyword '{matched_keyword}' in line: {line}")
-            with open(filename, 'w', encoding='utf-8') as file:
-                file.write(matched_keyword)
+            brand = match.group()
+            
+            # with open(filename, 'w', encoding='utf-8') as file:
+            #     file.write(matched_brand)
+
+        # search for product
+        match = products_regex.search(line)
+        if match:
+            product = match.group()
 
 
+        # search for capacity        
+        capacity_match = re.search(r'(\d+ml\*\d+=\d+ml)', line)
+        if capacity_match:
+            capacity = capacity_match.group(1)
 
+        # search for price
+        price_match = re.search(r'💰(\d+)', line)
+        if price_match:
+            price = int(price_match.group(1))
 
+        # search for valid
+        valid_match = re.search(r'效期(\d+)', line)
+        if valid_match:
+            valid = valid_match.group(1)
 
+    output = f"Brand: {brand}, Product: {product}, Capacity: {capacity}, Price: {price}, valid: {valid}"
+    with open(filename,  'w', encoding='utf-8') as file:
+        file.write(output)
+
+def get_effect(second_line):
+    effects_pattern = '|'.join(re.escape(brand) for brand in const.EFFECTS)
+    effects_regex = re.compile(effects_pattern)
+
+    effect = ""
+    match_effect = effects_regex.search(second_line)
+
+    #filename = const.ABSOLUATE_PATH + "product.txt"
+
+    if match_effect:
+        effect = match_effect.group()
+        #print(f"Found keyword '{matched_keyword}' in line: {line}")
+        #with open(filename, 'w', encoding='utf-8') as file:
+        #    file.write(effect)
+    return effect
+
+def get_capacity_and_price(third_line):
+    # Find the capacity and price in the string
+    capacity_match = re.search(r'(\d+ml\*\d+)', third_line)
+    price_match = re.search(r'💰(\d+)', third_line)
+
+    # Extract the capacity and price
+    capacity = capacity_match.group(1) if capacity_match else None
+    price = int(price_match.group(1)) if price_match else None
+
+    print(f"Capacity: {capacity}, Price: {price}")
+ 
+    return capacity, price
 
 
 
