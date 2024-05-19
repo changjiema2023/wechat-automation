@@ -2,8 +2,8 @@ import pyautogui
 import util
 import const
 import pyperclip
-
-
+import product_db
+import datetime
 
 def read_product():
     # Assume we are at the page Friend
@@ -12,12 +12,13 @@ def read_product():
 
     util.long_press(const.PRODUCT_DESCRIPTION_LOCATION[0], const.PRODUCT_DESCRIPTION_LOCATION[1])
 
-    # Click copy button in the product description
+    # Copy in the product description
     util.move_and_click(const.PRODUCT_DESCRIPTION_LOCATION[0] + const.COPY_LOCATION_RELATIVE_TO_PRODUCT_DESCRIPTION_LOCATION[0], 
                         const.PRODUCT_DESCRIPTION_LOCATION[1] + const.COPY_LOCATION_RELATIVE_TO_PRODUCT_DESCRIPTION_LOCATION[1], False)
     
 
     #util.print_clipboard_content(pyperclip.paste())
+    
     """
     filename = const.ABSOLUATE_PATH + "product.txt"
     clipboard_content = pyperclip.paste()
@@ -25,9 +26,24 @@ def read_product():
         file.write(clipboard_content)
     """
 
+    description = pyperclip.paste()
+    """get current time"""
+    time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
+
     clipboard_content = pyperclip.paste().split('\n')
 
-    util.get_brand_and_product(clipboard_content)
+    product, brand, capacity, buy_price, valid_thru = util.get_brand_and_product(clipboard_content)
+
+    product_item = product_db.ProductItem(product, brand, capacity, buy_price, valid_thru, time, description)
+
+    in_database, _ = product_item.is_in_database()
+
+    if in_database:
+        print("Product already in database")
+    else:
+        print("Product not in database")
+        product_item.insert_to_database()
+        print("Product is inserted in database")
 
     # effect = util.get_effect(clipboard_content[1])
 

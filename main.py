@@ -10,6 +10,7 @@ from datetime import datetime
 import pygetwindow as gw
 import product
 import database
+import util
 
 #location = pyautogui.center(res)
 #pyautogui.moveTo(location) # Move the mouse to the location
@@ -34,57 +35,6 @@ def send_moments():
     move_and_click(image_location=image_location)
 '''
 
-def insert_db():
-    db_config = {
-        'host': '127.0.0.1',
-        'user': 'root',
-        'password': 'root',
-        'database': 'cosmeticsdb',
-    }
-
-    # Create a connection to the MySQL database
-    connection = mysql.connector.connect(**db_config)
-
-    # Create a cursor to interact with the database
-    cursor = connection.cursor()
-
-    # Example data to insert
-    customer_data = [
-        ('Doe', 'Male', '否', ''),
-        # Add more rows as needed
-    ]
-
-    # SQL query to insert data into the customer table
-    insert_query = "INSERT INTO customer (姓名, 性别, 好友, 创建日期) VALUES (%(姓名)s, %(性别)s, %(好友)s, %(创建日期)s)"
-
-    current_time = datetime.now()
-    time_string = current_time.strftime("%Y-%m-%d %H:%M:%S")
-    entry_data = {
-        "姓名": "Doe",
-        "性别": "Male",
-        "好友": "否",
-        "创建日期": time_string,
-    }
-    cursor.execute(insert_query, entry_data)
-    '''
-    # Example data to insert
-    customer_data = [
-        ('Doe', 'Male', '否', ''),
-        # Add more rows as needed
-    ]
-
-    # Execute the query for each row of data
-    for customer in customer_data:
-        cursor.execute(insert_query, customer)
-    '''
-
-    # Commit the changes to the database
-    connection.commit()
-
-    # Close the cursor and connection
-    cursor.close()
-    connection.close() 
-
 # Move the window to the desired location.
 window_title = "2201117TY"
 def move_window_to_top_left(window_title):
@@ -100,9 +50,10 @@ if __name__ == "__main__":
     #location.main_page()
     
     # move_window_to_top_left(window_title)
-    database.connect_mysql()
+    #database.connect_mysql()
     product.read_product()
-    database.close_mysql()
+    #database.close_mysql()
+    #util.scroll_down()
 
     '''
     res = pyautogui.locateOnScreen(ABSOLUATE_PATH + "pics\\Chats-green.png", confidence=0.9)

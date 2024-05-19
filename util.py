@@ -5,6 +5,18 @@ import time
 from datetime import datetime
 import const
 import re
+import adbutils
+
+def scroll_down():
+    # Create an ADB device object
+    adb = adbutils.AdbClient(host="127.0.0.1", port=5037)
+    device = adb.device()
+
+    start_x, start_y = const.FIRST_POST_LOCATION[0], const.FIRST_POST_LOCATION[1]
+    end_x, end_y = start_x, start_y + const.PRODUCT_SCROLL_DOWN_DISTANCE
+
+    # Scroll down the screen for the distance of one post
+    device.shell(f"input swipe {start_x} {start_y} {end_x} {end_y}")
 
 def generate_random_coordinates(x, y):
     """Generate random coordinates within the screen resolution."""
@@ -68,24 +80,38 @@ def get_brand_and_product(clipboard_content):
             product = match.group()
 
 
-        # search for capacity        
-        capacity_match = re.search(r'(\d+ml\*\d+=\d+ml)', line)
-        if capacity_match:
-            capacity = capacity_match.group(1)
+        # search for capacity
+        if capacity == "":      
+            capacity = get_capacity(line)
 
         # search for price
         price_match = re.search(r'💰(\d+)', line)
         if price_match:
-            price = int(price_match.group(1))
+            buy_price = float(price_match.group(1))
 
         # search for valid
         valid_match = re.search(r'效期(\d+)', line)
         if valid_match:
-            valid = valid_match.group(1)
+            valid_thru = valid_match.group(1)
 
-    output = f"Brand: {brand}, Product: {product}, Capacity: {capacity}, Price: {price}, valid: {valid}"
-    with open(filename,  'w', encoding='utf-8') as file:
-        file.write(output)
+    #output = f"Brand: {brand}, Product: {product}, Capacity: {capacity}, Price: {price}, valid: {valid}"
+    #with open(filename,  'w', encoding='utf-8') as file:
+     #   file.write(output)
+    return product, brand, capacity, buy_price, valid_thru
+
+def get_capacity(line):
+    # Find the capacity in the string
+    capacity_match = re.search(r'(\d+ml\*\d+)', line)
+    weight_match = re.search(r'(\d+\.?\d*g)', line)
+    capacity = ""
+
+    # Extract the capacity
+    if capacity_match:
+        capacity = capacity_match.group(1)
+    elif weight_match:
+        capacity = weight_match.group(1)
+
+    return capacity
 
 def get_effect(second_line):
     effects_pattern = '|'.join(re.escape(brand) for brand in const.EFFECTS)
