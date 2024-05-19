@@ -9,6 +9,7 @@ import location
 from datetime import datetime
 import pygetwindow as gw
 import product
+import database
 
 #location = pyautogui.center(res)
 #pyautogui.moveTo(location) # Move the mouse to the location
@@ -99,7 +100,10 @@ if __name__ == "__main__":
     #location.main_page()
     
     # move_window_to_top_left(window_title)
+    database.connect_mysql()
     product.read_product()
+    database.close_mysql()
+
     '''
     res = pyautogui.locateOnScreen(ABSOLUATE_PATH + "pics\\Chats-green.png", confidence=0.9)
     print(res)
