@@ -28,15 +28,17 @@ def read_product():
 
     description = pyperclip.paste()
     """get current time"""
-    time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
 
     clipboard_content = pyperclip.paste().split('\n')
 
-    product, brand, capacity, buy_price, valid_thru = util.get_brand_and_product(clipboard_content)
+    """Create a productItem object"""
+    product_item = product_db.ProductItem()
+    product_item.产品描述 = description
+    product_item.更新日期 = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    product_item = product_db.ProductItem(product, brand, capacity, buy_price, valid_thru, time, description)
+    util.get_brand_and_product(clipboard_content, product_item)
 
-    in_database, _ = product_item.is_in_database()
+    in_database = product_item.is_in_database()
 
     if in_database:
         print("Product already in database")

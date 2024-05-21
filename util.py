@@ -51,7 +51,7 @@ def long_press(x, y, duration=const.MOVING_SPEED, press_duration=2):
     time.sleep(0.5)
 
 
-def get_brand_and_product(clipboard_content):
+def get_brand_and_product(clipboard_content, product_item):
     brands_pattern = '|'.join(re.escape(brand) for brand in const.BRANDS)
     brands_regex = re.compile(brands_pattern)
 
@@ -59,6 +59,7 @@ def get_brand_and_product(clipboard_content):
     products_regex = re.compile(products_pattern)
 
     brand, product, capacity, valid = "", "", "", ""
+    effects = ""
     price = 0
 
     filename = const.ABSOLUATE_PATH + "product.txt"
@@ -84,6 +85,9 @@ def get_brand_and_product(clipboard_content):
         if capacity == "":      
             capacity = get_capacity(line)
 
+        if effects == "":
+            effects = get_effect(line)            
+
         # search for price
         price_match = re.search(r'💰(\d+)', line)
         if price_match:
@@ -97,7 +101,14 @@ def get_brand_and_product(clipboard_content):
     #output = f"Brand: {brand}, Product: {product}, Capacity: {capacity}, Price: {price}, valid: {valid}"
     #with open(filename,  'w', encoding='utf-8') as file:
      #   file.write(output)
-    return product, brand, capacity, buy_price, valid_thru
+    
+    product_item.类别 = product
+    product_item.品牌 = brand
+    product_item.功效 = effects
+    product_item.容量 = capacity
+    product_item.成本 = buy_price
+    product_item.有效期 = valid_thru
+
 
 def get_capacity(line):
     # Find the capacity in the string
@@ -113,21 +124,17 @@ def get_capacity(line):
 
     return capacity
 
-def get_effect(second_line):
-    effects_pattern = '|'.join(re.escape(brand) for brand in const.EFFECTS)
-    effects_regex = re.compile(effects_pattern)
+def get_effect(line):
+    effects = ""
 
-    effect = ""
-    match_effect = effects_regex.search(second_line)
+    for effect in const.EFFECTS:
+        if effect in line:
+            effects += effect + " "
 
-    #filename = const.ABSOLUATE_PATH + "product.txt"
+    """remove the last space"""
+    effects = effects[:-1]
 
-    if match_effect:
-        effect = match_effect.group()
-        #print(f"Found keyword '{matched_keyword}' in line: {line}")
-        #with open(filename, 'w', encoding='utf-8') as file:
-        #    file.write(effect)
-    return effect
+    return effects
 
 def get_capacity_and_price(third_line):
     # Find the capacity and price in the string

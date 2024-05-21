@@ -49,7 +49,7 @@ if __name__ == "__main__":
     #insert_db()
     #location.main_page()
     
-    # move_window_to_top_left(window_title)
+    #move_window_to_top_left(window_title)
     #database.connect_mysql()
     product.read_product()
     #database.close_mysql()
